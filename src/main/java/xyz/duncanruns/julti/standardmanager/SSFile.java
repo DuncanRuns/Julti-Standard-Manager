@@ -104,8 +104,8 @@ public class SSFile {
 
     public List<EditableOption> getEditableOptions() {
         List<EditableOption> editableOptions = new LinkedList<>();
-        editableOptions.add(new EditableOption("Render Distance (In Game)", "renderDistance", Validators.ofInt(2, 32)));
-        editableOptions.add(new EditableOption("Render Distance (On Wall)", "renderDistanceOnWorldJoin", Validators.ofInt(2, 32)));
+        editableOptions.add(new EditableOption("Render Distance (In Game)", "renderDistanceOnWorldJoin", Validators.ofInt(2, 32)));
+        editableOptions.add(new EditableOption("Render Distance (On Wall)", "renderDistance", Validators.ofInt(2, 32)));
         editableOptions.add(new EditableOption("FOV (In Game)", "fovOnWorldJoin", Validators.ofInt(30, 110)));
         editableOptions.add(new EditableOption("FOV (On Wall)", "fov", Validators.ofInt(30, 110)));
         editableOptions.add(new EditableOption("Perspective", "perspective", Validators.ofInt(0, 2)));
