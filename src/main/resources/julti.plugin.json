@@ -1,0 +1,6 @@
+{
+  "name": "Standard Manager",
+  "id": "standard-manager",
+  "version": "${version}",
+  "initializer": "xyz.duncanruns.julti.standardmanager.StandardManagerInit"
+}

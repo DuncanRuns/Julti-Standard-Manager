@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group = project.maven_group
+version = project.plugin_version
+archivesBaseName = project.archives_base_name
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.DuncanRuns:Julti:15080a7041'
+}
+
+
+processResources {
+    // Totally stolen from Fabric
+    inputs.property "version", project.version
+
+    filesMatching("julti.plugin.json") {
+        expand "version": project.version
+    }
+}
