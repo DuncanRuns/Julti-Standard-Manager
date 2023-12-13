@@ -1,5 +1,6 @@
 package xyz.duncanruns.julti.standardmanager;
 
+import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.instance.MinecraftInstance;
 import xyz.duncanruns.julti.management.InstanceManager;
 import xyz.duncanruns.julti.util.FileUtil;
@@ -146,6 +147,8 @@ public class SSFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        // Tell Julti to reload instance options
+        Julti.doLater(() -> InstanceManager.getInstanceManager().getInstances().forEach(MinecraftInstance::discoverInformation));
     }
 
     public boolean appliesTo(MinecraftInstance instance) {
