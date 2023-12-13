@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.DuncanRuns:Julti:15080a7041'
+    implementation 'com.github.DuncanRuns:Julti:v0.22.0'
 }
 
 
