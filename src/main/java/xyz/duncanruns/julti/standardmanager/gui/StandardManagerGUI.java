@@ -143,6 +143,7 @@ public class StandardManagerGUI extends JFrame {
             }
             if (editableOption.set(out.toString())) {
                 this.reloadSelectedFile(false);
+                Julti.doLater(() -> DoAllFastUtil.doAllFast(MinecraftInstance::discoverInformation));
                 return;
             }
         }
