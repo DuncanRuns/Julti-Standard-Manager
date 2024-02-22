@@ -3,12 +3,14 @@ package xyz.duncanruns.julti.standardmanager.gui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.gui.JultiGUI;
 import xyz.duncanruns.julti.instance.MinecraftInstance;
 import xyz.duncanruns.julti.management.InstanceManager;
 import xyz.duncanruns.julti.standardmanager.SSFile;
 import xyz.duncanruns.julti.standardmanager.StandardManagerInit;
+import xyz.duncanruns.julti.util.DoAllFastUtil;
 import xyz.duncanruns.julti.util.FileUtil;
 
 import javax.swing.*;
@@ -96,10 +98,10 @@ public class StandardManagerGUI extends JFrame {
         }
         this.fileSelectBox.setSelectedItem(ssFile);
         this.currentSSFile = ssFile;
-        this.reloadSelectedFile();
+        this.reloadSelectedFile(true);
     }
 
-    private void reloadSelectedFile() {
+    private void reloadSelectedFile(boolean validateOptions) {
         boolean alreadyAppliedToInstances = this.currentSSFile.isAppliedToAllInstances();
         this.applyButton.setEnabled(!alreadyAppliedToInstances);
         this.applyButton.setText(alreadyAppliedToInstances ? "Already Applied to Instances" : "Apply to All Instances");
@@ -122,10 +124,10 @@ public class StandardManagerGUI extends JFrame {
         }
         this.revalidate();
 
-        if (!this.currentSSFile.hasRequiredJultiOptions()) {
+        if (validateOptions && !this.currentSSFile.hasRequiredJultiOptions()) {
             if (JOptionPane.showConfirmDialog(this, "Some required options for Julti are missing. Fix required options?", "Julti Standard Manager: Fix Required Options", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
                 this.currentSSFile.fixRequiredForJulti();
-                this.reloadSelectedFile();
+                this.reloadSelectedFile(true);
             }
         }
     }
@@ -140,7 +142,7 @@ public class StandardManagerGUI extends JFrame {
                 return;
             }
             if (editableOption.set(out.toString())) {
-                this.reloadSelectedFile();
+                this.reloadSelectedFile(false);
                 return;
             }
         }
@@ -202,12 +204,12 @@ public class StandardManagerGUI extends JFrame {
 
     private void pressApplyButton() {
         this.currentSSFile.applyToAllInstances();
-        this.reloadSelectedFile();
+        this.reloadSelectedFile(false);
     }
 
     private void pressReloadFileButton() {
         this.currentSSFile.load();
-        this.reloadSelectedFile();
+        this.reloadSelectedFile(false);
     }
 
     private void pressEditManuallyButton() {
