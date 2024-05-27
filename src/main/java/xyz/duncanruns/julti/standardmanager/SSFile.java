@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import static xyz.duncanruns.julti.standardmanager.StandardManagerConstants.STANDARD_MANAGER_PATH;
@@ -46,7 +46,7 @@ public class SSFile {
     private boolean fullscreenNeedsChanging() {
         synchronized (Julti.getJulti()) {
             String fs = this.get("fullscreen");
-            if (!fs.isEmpty() && !Validators.BOOLEAN_VALIDATOR.apply(fs)) { // Invalid value, should be changed
+            if (!fs.isEmpty() && !Validators.BOOLEAN_VALIDATOR.test(fs)) { // Invalid value, should be changed
                 return true;
             }
             if (JultiOptions.getJultiOptions().utilityMode) { // Never needs changing if we are on utility mode except for invalid value
@@ -100,9 +100,9 @@ public class SSFile {
         return (!fullscreenNeedsChanging())
                 && this.get("pauseOnLostFocus").equals("false")
                 && this.get("changeOnResize").equals("true")
-                && Validators.KEYBIND_REQUIRED_VALIDATOR.apply(this.get("key_Create New World"))
-                && Validators.KEYBIND_REQUIRED_VALIDATOR.apply(this.get("key_Leave Preview"))
-                && Validators.KEYBIND_REQUIRED_VALIDATOR.apply(this.get("key_key.fullscreen"));
+                && Validators.KEYBIND_REQUIRED_VALIDATOR.test(this.get("key_Create New World"))
+                && Validators.KEYBIND_REQUIRED_VALIDATOR.test(this.get("key_Leave Preview"))
+                && Validators.KEYBIND_REQUIRED_VALIDATOR.test(this.get("key_key.fullscreen"));
     }
 
     public void fixRequiredForJulti() {
@@ -112,13 +112,13 @@ public class SSFile {
         }
         this.set("pauseOnLostFocus", "false");
         this.set("changeOnResize", "true");
-        if (!Validators.KEYBIND_REQUIRED_VALIDATOR.apply(this.get("key_key.fullscreen"))) {
+        if (!Validators.KEYBIND_REQUIRED_VALIDATOR.test(this.get("key_key.fullscreen"))) {
             this.set("key_key.fullscreen", "key.keyboard.f11");
         }
-        if (!Validators.KEYBIND_REQUIRED_VALIDATOR.apply(this.get("key_Create New World"))) {
+        if (!Validators.KEYBIND_REQUIRED_VALIDATOR.test(this.get("key_Create New World"))) {
             this.set("key_Create New World", "key.keyboard.f13");
         }
-        if (!Validators.KEYBIND_REQUIRED_VALIDATOR.apply(this.get("key_Leave Preview"))) {
+        if (!Validators.KEYBIND_REQUIRED_VALIDATOR.test(this.get("key_Leave Preview"))) {
             this.set("key_Leave Preview", "key.keyboard.f14");
         }
         this.save();
@@ -265,9 +265,9 @@ public class SSFile {
     public class EditableOption {
         public final String name;
         public final String key;
-        private final Function<String, Boolean> validator;
+        private final Predicate<String> validator;
 
-        public EditableOption(String name, String key, Function<String, Boolean> validator) {
+        public EditableOption(String name, String key, Predicate<String> validator) {
             this.name = name;
             this.key = key;
             this.validator = validator;
@@ -278,7 +278,7 @@ public class SSFile {
         }
 
         public boolean set(String value) {
-            if (!this.validator.apply(value)) {
+            if (!this.validator.test(value)) {
                 return false;
             }
             SSFile.this.set(this.key, value);

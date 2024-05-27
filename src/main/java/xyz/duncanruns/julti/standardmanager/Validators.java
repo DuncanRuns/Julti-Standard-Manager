@@ -1,14 +1,14 @@
 package xyz.duncanruns.julti.standardmanager;
 
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static xyz.duncanruns.julti.standardmanager.StandardManagerConstants.VALID_MC_KEYS;
 
 public final class Validators {
-    public static final Function<String, Boolean> ALWAYS_VALID = s -> true;
-    public static final Function<String, Boolean> BOOLEAN_VALIDATOR = s -> s.equals("true") || s.equals("false");
-    public static final Function<String, Boolean> KEYBIND_VALIDATOR = VALID_MC_KEYS::contains;
-    public static final Function<String, Boolean> KEYBIND_REQUIRED_VALIDATOR = s -> {
+    public static final Predicate<String> ALWAYS_VALID = s -> true;
+    public static final Predicate<String> BOOLEAN_VALIDATOR = s -> s.equals("true") || s.equals("false");
+    public static final Predicate<String> KEYBIND_VALIDATOR = VALID_MC_KEYS::contains;
+    public static final Predicate<String> KEYBIND_REQUIRED_VALIDATOR = s -> {
         if (s.isEmpty() || s.equals("key.keyboard.unknown")) {
             return false;
         }
@@ -18,7 +18,7 @@ public final class Validators {
     private Validators() {
     }
 
-    public static Function<String, Boolean> ofDouble(double min, double max) {
+    public static Predicate<String> ofDouble(double min, double max) {
         return s -> {
             try {
                 double v = Double.parseDouble(s);
@@ -29,7 +29,7 @@ public final class Validators {
         };
     }
 
-    public static Function<String, Boolean> ofInt(int min, int max) {
+    public static Predicate<String> ofInt(int min, int max) {
         return s -> {
             try {
                 int v = Integer.parseInt(s);
