@@ -12,10 +12,11 @@ targetCompatibility = JavaVersion.VERSION_1_8
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
+    maven { url "https://www.jetbrains.com/intellij-repository/releases" }
 }
 
 dependencies {
-    implementation 'com.github.DuncanRuns:Julti:28a7e5c804'
+    implementation 'com.github.DuncanRuns:Julti:f16ba956a1'
 }
 
 
