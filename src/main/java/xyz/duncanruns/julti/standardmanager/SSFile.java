@@ -100,7 +100,6 @@ public class SSFile {
         return (!fullscreenNeedsChanging())
                 && this.get("pauseOnLostFocus").equals("false")
                 && this.get("changeOnResize").equals("true")
-                && this.get("key_Cycle ChunkMap Positions").equals("key.keyboard.unknown")
                 && Validators.KEYBIND_REQUIRED_VALIDATOR.apply(this.get("key_Create New World"))
                 && Validators.KEYBIND_REQUIRED_VALIDATOR.apply(this.get("key_Leave Preview"))
                 && Validators.KEYBIND_REQUIRED_VALIDATOR.apply(this.get("key_key.fullscreen"));
@@ -113,7 +112,6 @@ public class SSFile {
         }
         this.set("pauseOnLostFocus", "false");
         this.set("changeOnResize", "true");
-        this.set("key_Cycle ChunkMap Positions", "key.keyboard.unknown");
         if (!Validators.KEYBIND_REQUIRED_VALIDATOR.apply(this.get("key_key.fullscreen"))) {
             this.set("key_key.fullscreen", "key.keyboard.f11");
         }
