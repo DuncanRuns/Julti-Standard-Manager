@@ -1,6 +1,7 @@
 package xyz.duncanruns.julti.standardmanager;
 
 import xyz.duncanruns.julti.Julti;
+import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.instance.MinecraftInstance;
 import xyz.duncanruns.julti.management.InstanceManager;
 import xyz.duncanruns.julti.util.FileUtil;
@@ -42,6 +43,25 @@ public class SSFile {
         return true;
     }
 
+    private boolean fullscreenNeedsChanging() {
+        synchronized (Julti.getJulti()) {
+            String fs = this.get("fullscreen");
+            if (!fs.isEmpty() && !Validators.BOOLEAN_VALIDATOR.apply(fs)) { // Invalid value, should be changed
+                return true;
+            }
+            if (JultiOptions.getJultiOptions().utilityMode) { // Never needs changing if we are on utility mode except for invalid value
+                return false;
+            }
+            if (InstanceManager.getInstanceManager().getSize() > 1 && !fs.equals("false")) { // Multi instancing always should have fullscreen:false
+                return true;
+            }
+            if (fs.equals("true")) { // Fullscreen really should never be true
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isInManagerFolder() {
         return this.inManagerFolder;
     }
@@ -77,7 +97,7 @@ public class SSFile {
     }
 
     public boolean hasRequiredJultiOptions() {
-        return this.get("fullscreen").equals("false")
+        return (!fullscreenNeedsChanging())
                 && this.get("pauseOnLostFocus").equals("false")
                 && this.get("changeOnResize").equals("true")
                 && this.get("key_Cycle ChunkMap Positions").equals("key.keyboard.unknown")
@@ -87,7 +107,10 @@ public class SSFile {
     }
 
     public void fixRequiredForJulti() {
-        this.set("fullscreen", "false");
+        this.set("f3PauseOnWorldLoad", "true");
+        if (fullscreenNeedsChanging()) {
+            this.set("fullscreen", "false");
+        }
         this.set("pauseOnLostFocus", "false");
         this.set("changeOnResize", "true");
         this.set("key_Cycle ChunkMap Positions", "key.keyboard.unknown");
