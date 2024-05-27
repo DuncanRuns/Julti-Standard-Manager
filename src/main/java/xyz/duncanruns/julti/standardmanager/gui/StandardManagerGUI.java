@@ -65,6 +65,10 @@ public class StandardManagerGUI extends JFrame {
         }
         this.populateSelectorBox();
         this.setLocation(JultiGUI.getPluginsGUI().getLocation());
+        try {
+            this.setIconImage(JultiGUI.getLogo());
+        } catch (Exception ignored) {
+        }
         this.addListeners();
         this.setSize(650, 400);
         if (this.currentSSFile == null) {
