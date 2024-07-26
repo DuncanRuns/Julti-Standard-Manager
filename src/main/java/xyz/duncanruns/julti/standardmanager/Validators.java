@@ -7,13 +7,8 @@ import static xyz.duncanruns.julti.standardmanager.StandardManagerConstants.VALI
 public final class Validators {
     public static final Predicate<String> ALWAYS_VALID = s -> true;
     public static final Predicate<String> BOOLEAN_VALIDATOR = s -> s.equals("true") || s.equals("false");
-    public static final Predicate<String> KEYBIND_VALIDATOR = VALID_MC_KEYS::contains;
-    public static final Predicate<String> KEYBIND_REQUIRED_VALIDATOR = s -> {
-        if (s.isEmpty() || s.equals("key.keyboard.unknown")) {
-            return false;
-        }
-        return VALID_MC_KEYS.contains(s);
-    };
+    public static final Predicate<String> KEYBIND_VALIDATOR = ofInt(0, 223).or(ofInt(-100, -85)).or(VALID_MC_KEYS::contains);
+    public static final Predicate<String> KEYBIND_REQUIRED_VALIDATOR = KEYBIND_VALIDATOR.and(s -> !(s.isEmpty() || s.equals("key.keyboard.unknown") || s.equals("0")));
 
     private Validators() {
     }
