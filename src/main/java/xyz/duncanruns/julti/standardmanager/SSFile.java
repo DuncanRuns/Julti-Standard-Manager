@@ -97,7 +97,7 @@ public class SSFile {
     }
 
     public boolean hasRequiredJultiOptions() {
-        return (!fullscreenNeedsChanging())
+        return (!this.fullscreenNeedsChanging())
                 && this.get("pauseOnLostFocus").equals("false")
                 && this.get("changeOnResize").equals("true")
                 && Validators.KEYBIND_REQUIRED_VALIDATOR.test(this.get("key_Create New World"))
@@ -107,7 +107,7 @@ public class SSFile {
 
     public void fixRequiredForJulti() {
         this.set("f3PauseOnWorldLoad", "true");
-        if (fullscreenNeedsChanging()) {
+        if (this.fullscreenNeedsChanging()) {
             this.set("fullscreen", "false");
         }
         this.set("pauseOnLostFocus", "false");
