@@ -5,6 +5,7 @@ import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.instance.MinecraftInstance;
 import xyz.duncanruns.julti.management.InstanceManager;
 import xyz.duncanruns.julti.util.FileUtil;
+import xyz.duncanruns.julti.util.MCVersionUtil;
 
 import java.awt.*;
 import java.io.IOException;
@@ -106,6 +107,8 @@ public class SSFile {
     }
 
     public void fixRequiredForJulti() {
+        InstanceManager instanceManager = InstanceManager.getInstanceManager();
+        boolean isPre113 = MCVersionUtil.isOlderThan(Optional.ofNullable(instanceManager.getSize() == 0 ? null : instanceManager.getInstances().get(0).getVersionString()).orElse("1.16.1"), "1.13");
         this.set("f3PauseOnWorldLoad", "true");
         if (this.fullscreenNeedsChanging()) {
             this.set("fullscreen", "false");
@@ -113,13 +116,13 @@ public class SSFile {
         this.set("pauseOnLostFocus", "false");
         this.set("changeOnResize", "true");
         if (!Validators.KEYBIND_REQUIRED_VALIDATOR.test(this.get("key_key.fullscreen"))) {
-            this.set("key_key.fullscreen", "key.keyboard.f11");
+            this.set("key_key.fullscreen", isPre113 ? "87" : "key.keyboard.f11");
         }
         if (!Validators.KEYBIND_REQUIRED_VALIDATOR.test(this.get("key_Create New World"))) {
-            this.set("key_Create New World", "key.keyboard.f13");
+            this.set("key_Create New World", isPre113 ? "100" : "key.keyboard.f13");
         }
         if (!Validators.KEYBIND_REQUIRED_VALIDATOR.test(this.get("key_Leave Preview"))) {
-            this.set("key_Leave Preview", "key.keyboard.f14");
+            this.set("key_Leave Preview", isPre113 ? "101" : "key.keyboard.f14");
         }
         this.save();
     }
